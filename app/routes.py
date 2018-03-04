@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, url_for, redirect, request
-from flask_login import current_user, login_user, login_user
+from flask_login import current_user, login_user, logout_user
 from app.models import User
 from sqlalchemy.exc import IntegrityError
 
@@ -26,6 +26,7 @@ def register():
 	if request.method == 'GET':
 		return render_template('register.html')
 	else:
+		username = request.form['username']
 		firstName = request.form['firstname']
 		lastName = request.form['lastname']
 		email = request.form['email']
@@ -36,11 +37,11 @@ def register():
 			return render_template('register.html', error='Passwords do not match!')
 
 		try:
-			user = User(first_name=firstName, last_name=lastName, email=email, password=password)
+			user = User(username= username, first_name=firstName, last_name=lastName, email=email, password=password)
 			db.session.add(user)
 			db.session.commit()
 		except IntegrityError as e:
-			return render_template('register.html', error='Email already exists')
+			return render_template('register.html', error='Username already exists')
 		except Exception as e:
 			return render_template('register.html', error=e.message)
 
