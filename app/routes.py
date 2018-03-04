@@ -1,5 +1,8 @@
-from app import app
+from app import app, db
 from flask import render_template, url_for, redirect, request
+from flask_login import current_user, login_user, login_user
+from app.models import User
+from sqlalchemy.exc import IntegrityError
 
 @app.route("/", methods=['GET'])
 def home():
@@ -7,12 +10,16 @@ def home():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+	if current_user.is_authenticated:
+		return redirect(url_for('dashboard'))
 	if request.method == 'GET':
 		return render_template('login.html')
 	else:
-		print request.form['username']
-		print request.form['password']
-		return "Hello World"
+		user = User.query.filter_by(email=request.form['email']).first()
+		if user is None or not user.check_password(request.form['password']):
+			return render_template('login.html', error='Invalid email or password')
+		login_user(user, remember=request.form['remember_me'])
+		return redirect(url_for('dashboard'))
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -23,10 +30,31 @@ def register():
 		lastName = request.form['lastname']
 		email = request.form['email']
 		password = request.form['password']
+		confirm_password = request.form['confirm_password']
 
-		
-		
+		if password != confirm_password:
+			return render_template('register.html', error='Passwords do not match!')
 
+		try:
+			user = User(first_name=firstName, last_name=lastName, email=email, password=password)
+			db.session.add(user)
+			db.session.commit()
+		except IntegrityError as e:
+			return render_template('register.html', error='Email already exists')
+		except Exception as e:
+			return render_template('register.html', error=e.message)
+
+		return redirect(url_for('login'))
+
+
+@app.route("/dashboard", methods=['GET'])
+def dashboard():
+	return render_template('dashboard.html', user=current_user)
+
+@app.route('/logout')
+def logout():
+	logout_user()
+	return redirect(url_for('login'))
 
 @app.errorhandler(404)
 def page_not_found(error):
