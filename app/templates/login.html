@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{%block content %}
+		<form method="POST">
+			<input type="text" name="email" placeholder="email" required>
+			<br>
+			<input type="password" name="password" placeholder="password" required>
+			<br>
+			<input type="submit" name="Login" value="Login">
+			<input type="button" value="Register" onclick="window.location='/register'">
+		</form>
+{% endblock %}
