@@ -1,6 +1,7 @@
 import datetime
 from pymongo import MongoClient
 import requests
+from elasticsearch import Elasticsearch, helpers
 
 API_KEY = '32ae62cb563c4eed9a34b44c6c64219f'
 
@@ -50,8 +51,61 @@ def main():
 			except Exception, e:
 				print e.message
 		date += datetime.timedelta(days=1)
+
+def getMongoData():
+	db = connectMongo()
+	cursor = db.newsmodel.find({})
+
+	es = Elasticsearch(['http://localhost:9200'], timeout=200)
+
+	actions = []
+	for document in cursor:
+		obj = {}
+		# print type(document['title']), type(document['description'])
+		try:
+			obj['title'] = document['title']
+			obj['description'] = document['description']
+			
+			obj['queryText'] = document['title'] + ' ' + document['description'] + ' ' 
+			if document['author']:
+				obj['queryText'] += document['author'] + ' '
+
+			if document['publishedAt']:
+				obj['queryText'] += document['publishedAt']
+
+			if document['source'] and document['source']['name']:
+				obj['queryText'] += document['source']['name']
+		
+		except Exception,e:
+			print e.message
+			print document['_id']
+
+		# print 'done everything'
+
+		action = {
+			"_id": str(document['_id']),
+			"_index": "samplesearchapp",
+			"_type": "newsModel",
+			"_source": obj
+		}
+
+		actions.append(action)
+		if len(actions) % 100 == 0:
+			try:
+				helpers.bulk(es, actions)
+				actions = []
+			except Exception, e:
+				print e.message
+		# break
+	# helpers.bulk(es, actions)
+	try:
+		helpers.bulk(es, actions)
+	except Exception, e:
+		print 'in exception', len(actions), actions
+		print e.message
 	
 if __name__ == '__main__':
-	main()
+	# main()
+	getMongoData()
 
 # https://newsapi.org/v2/everything?sources=abc-news&from=2018-02-01&to=2018-02-28&sortBy=popularity&apiKey=32ae62cb563c4eed9a34b44c6c64219f
