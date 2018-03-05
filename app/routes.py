@@ -4,6 +4,7 @@ from flask_login import current_user, login_user, logout_user
 from app.models import User
 from sqlalchemy.exc import IntegrityError
 from elastic import searchQuery
+from mongo import searchDoc
 
 @app.route("/", methods=['GET'])
 def home():
@@ -68,6 +69,11 @@ def search():
 		return render_template('dashboard.html', user=current_user, results=response, query=query)
 	return redirect(url_for('login'))
 
+@app.route('/document/<docid>', methods=['GET'])
+def document(docid):
+	# print docid
+	document = searchDoc(docid)
+	return str(document)
 
 @app.errorhandler(404)
 def page_not_found(error):

@@ -14,6 +14,21 @@
 		</form>
 
 		{% if results %}
-			<p>{{ results }}</p>
+		<table style="width:100%">
+			<tr>
+				<th>Ralated news</th>
+			</tr>
+
+			{% for item in results %}
+				<tr>
+					<td>
+						<a href="/document/{{item._id}}" target="_blank">
+							{{item._id}}
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+			
+		</table >
 		{% endif %}
 {% endblock %}
