@@ -66,7 +66,11 @@ def search():
 	if current_user.is_authenticated:
 		query = request.args.get('query')
 		response = searchQuery(query)
-		return render_template('dashboard.html', user=current_user, results=response, query=query)
+		result = []
+		for element in response:
+			obj = {'_id':element['_id'], 'title':element['_source']['title']}
+			result.append(obj)
+		return render_template('dashboard.html', user=current_user, results=result, query=query)
 	return redirect(url_for('login'))
 
 @app.route('/document/<docid>', methods=['GET'])

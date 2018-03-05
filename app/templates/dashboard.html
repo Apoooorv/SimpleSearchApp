@@ -1,34 +1,52 @@
 {% extends "index.html" %}
 
 {% block content %}
-		<h1>Hello {{ user }}!</h1>
-		<h2>You are at dashboard</h2>
+	<div style="width: 100%;">
+		<div>
+			<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+			  <a class="navbar-brand" href="#">Welcome {{user}}!</a>
+			  <form class="form-inline ml-auto my-2 my-lg-0" action="/logout">
+			      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+			   </form>
+			</nav>
+		</div>
 
-		<form action="/search">
-			{% if query %}
-				<input type="text" name="query" placeholder="Enter text.." value={{ query }} required>
-			{% else %}
-				<input type="text" name="query" placeholder="Enter text.." required>
-			{% endif %}
-			<input type="Submit" name="submit" value="Search">
-		</form>
-
-		{% if results %}
-		<table style="width:100%">
-			<tr>
-				<th>Ralated news</th>
-			</tr>
-
-			{% for item in results %}
-				<tr>
-					<td>
-						<a href="/document/{{item._id}}" target="_blank">
-							{{item._id}}
-						</a>
-					</td>
-				</tr>
-			{% endfor %}
+		<br />
+		
+		<div class="row justify-content-center">
 			
-		</table >
+				<form class="form-inline col-10" action="/search">
+					{% if query %}
+						<input class="form-control col-10" type="text" name="query" placeholder="Enter text.." value={{ query }} required>
+					{% else %}
+						<input class="form-control col-10" type="text" name="query" placeholder="Enter text.." required>
+					{% endif %}
+					<!-- <input class="form-control mr-sm-2" type="text" placeholder="Search"> -->
+      				<button class="btn btn-outline-success col-2 my-sm-0" type="submit">Search</button> 
+				</form>
+		</div>
+		
+		<br />
+		{% if results %}
+		<div class="row justify-content-center">
+		<div class="col-10">
+			<div class="card" style="margin-left: 1px; margin-right: 1px;">
+					<div class="card-block">
+						<h4 class="card-title"> Search Results </h4>
+						<p class="card-text"> Click on the news to read details..</p>
+					</div>
+					<ul class="list-group list-group-flush">
+						{% for item in results %}
+							<a href="/document/{{item.id}}" target="_blank">
+								<li class="list-group-item">{{ item.title }}</li>		
+							</a>
+						{% endfor %}
+					</ul>
+				
+			</div>
+		</div>
+			</div>
+			
 		{% endif %}
+	</div>
 {% endblock %}
