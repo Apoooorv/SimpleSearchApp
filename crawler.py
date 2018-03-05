@@ -109,3 +109,4 @@ if __name__ == '__main__':
 	getMongoData()
 
 # https://newsapi.org/v2/everything?sources=abc-news&from=2018-02-01&to=2018-02-28&sortBy=popularity&apiKey=32ae62cb563c4eed9a34b44c6c64219f
+# {"size": 100,"query": { "simple_query_string": {"query": "Obama","fields": ["queryText"]}}}

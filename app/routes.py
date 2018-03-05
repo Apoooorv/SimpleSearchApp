@@ -3,6 +3,7 @@ from flask import render_template, url_for, redirect, request
 from flask_login import current_user, login_user, logout_user
 from app.models import User
 from sqlalchemy.exc import IntegrityError
+from elastic import searchQuery
 
 @app.route("/", methods=['GET'])
 def home():
@@ -14,8 +15,10 @@ def login():
 		return redirect(url_for('dashboard'))
 	if request.method == 'GET':
 		return render_template('login.html')
+	if request.form['submit'] == 'Register':
+		return redirect(url_for('register'))
 	else:
-		user = User.query.filter_by(email=request.form['email']).first()
+		user = User.query.filter_by(username=request.form['username']).first()
 		if user is None or not user.check_password(request.form['password']):
 			return render_template('login.html', error='Invalid email or password')
 		login_user(user, remember=request.form['remember_me'])
@@ -56,6 +59,15 @@ def dashboard():
 def logout():
 	logout_user()
 	return redirect(url_for('login'))
+
+@app.route('/search', methods=['GET'])
+def search():
+	if current_user.is_authenticated:
+		query = request.args.get('query')
+		response = searchQuery(query)
+		return render_template('dashboard.html', user=current_user, results=response, query=query)
+	return redirect(url_for('login'))
+
 
 @app.errorhandler(404)
 def page_not_found(error):
