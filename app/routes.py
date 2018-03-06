@@ -16,8 +16,8 @@ def login():
 		return redirect(url_for('dashboard'))
 	if request.method == 'GET':
 		return render_template('login.html')
-	if request.form['submit'] == 'Register':
-		return redirect(url_for('register'))
+	# if request.form['submit'] == 'Register':
+	# 	return redirect(url_for('register'))
 	else:
 		user = User.query.filter_by(username=request.form['username']).first()
 		if user is None or not user.check_password(request.form['password']):
