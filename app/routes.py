@@ -65,12 +65,30 @@ def logout():
 def search():
 	if current_user.is_authenticated:
 		query = request.args.get('query')
-		response = searchQuery(query)
+		index = request.args.get('page')
+		if not index:
+			index = 0
+		else:
+			index = int(index)
+
+		response, total = searchQuery(query, index)
+		if total % 10:
+			total = total / 10 + 1
+		else:
+			total = total / 10
+
+		if total == 1:
+			pagination = 'False'
+		else:
+			pagination = 'True'
+
+		current_index = index
+
 		result = []
 		for element in response:
 			obj = {'_id':element['_id'], 'title':element['_source']['title']}
 			result.append(obj)
-		return render_template('dashboard.html', user=current_user, results=result, query=query)
+		return render_template('dashboard.html', user=current_user, results=result, query=query, total=total, pagination=pagination, current_index=current_index)
 	return redirect(url_for('login'))
 
 @app.route('/document/<docid>', methods=['GET'])

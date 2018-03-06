@@ -10,13 +10,13 @@ port = config.get('ELASTICSEARCH', 'PORT')
 
 es = Elasticsearch(['http://' + server + ':' + port], timeout=200)
 
-def searchQuery(query):
+def searchQuery(query, fromindex):
 	index = config.get('ELASTICSEARCH', 'INDEX')
 	document = config.get('ELASTICSEARCH', 'DOCUMENT')
-	body = {"size":100, "query":{"simple_query_string":{"query":query, "fields":["queryText"]}}}
+	body = {"from": fromindex*10, "size":10, "query":{"simple_query_string":{"query":query, "fields":["queryText"]}}}
 	try:
 		j = es.search(index=index, doc_type=document, body=body)
-		return j['hits']['hits']
+		return j['hits']['hits'], j['hits']['total']
 	except Exception, e:
 		print e.message
 		return []

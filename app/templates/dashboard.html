@@ -29,23 +29,61 @@
 		<br />
 		{% if results %}
 		<div class="row justify-content-center">
-		<div class="col-10">
-			<div class="card" style="margin-left: 1px; margin-right: 1px;">
-					<div class="card-block">
-						<h4 class="card-title"> Search Results </h4>
-						<p class="card-text"> Click on the news to read details..</p>
-					</div>
-					<ul class="list-group list-group-flush">
-						{% for item in results %}
-							<a href="/document/{{item.id}}" target="_blank">
-								<li class="list-group-item">{{ item.title }}</li>		
-							</a>
-						{% endfor %}
-					</ul>
-				
+			<div class="col-10">
+				<div class="card" style="margin-left: 1px; margin-right: 1px;">
+						<div class="card-block">
+							<h4 class="card-title"> Search Results </h4>
+							<p class="card-text"> Click on the news to read details..</p>
+						</div>
+						<ul class="list-group list-group-flush">
+							{% for item in results %}
+								<a href="/document/{{item.id}}" target="_blank">
+									<li class="list-group-item">{{ item.title }}</li>		
+								</a>
+							{% endfor %}
+						</ul>
+					
+				</div>
 			</div>
+			<br />
+			<br />
 		</div>
-			</div>
+
+		{% if pagination == 'True' %}
+		<div class="row justify-content-center">
+			{% if current_index == 0 %}
+
+				<button class="btn btn-link" disabled> 
+				Previous
+				<!-- <a href="/search?query={{query}}&page=0">Previous</a>  -->
+				</button>
+
+			{% else %}
+			
+				<button class="btn btn-link"> 
+				<a href="/search?query={{query}}&page={{current_index-1}}">Previous</a> 
+				</button>
+			
+			{% endif %}
+
+			{%if current_index == total-1 %}
+			
+				<button class="btn btn-link" disabled> 
+				<!-- <a href="/search?query={{query}}&page={{total}}">Next</a> -->
+				Next
+				</button>
+			
+			{% else %}
+			
+				<button class="btn btn-link"> 
+				<a href="/search?query={{query}}&page={{current_index+1}}">Next</a>
+				</button>
+			
+			{% endif %}
+
+		</div>
+			
+		{% endif %}
 			
 		{% endif %}
 	</div>
