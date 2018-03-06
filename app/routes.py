@@ -21,7 +21,7 @@ def login():
 	else:
 		user = User.query.filter_by(username=request.form['username']).first()
 		if user is None or not user.check_password(request.form['password']):
-			return render_template('login.html', error='Invalid email or password')
+			return render_template('login.html', error='Invalid username or password')
 		login_user(user, remember=request.form['remember_me'])
 		return redirect(url_for('dashboard'))
 
