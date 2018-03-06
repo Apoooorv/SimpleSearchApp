@@ -86,16 +86,15 @@ def search():
 
 		result = []
 		for element in response:
-			obj = {'_id':element['_id'], 'title':element['_source']['title']}
+			obj = {'id':element['_id'], 'title':element['_source']['title']}
 			result.append(obj)
 		return render_template('dashboard.html', user=current_user, results=result, query=query, total=total, pagination=pagination, current_index=current_index)
 	return redirect(url_for('login'))
 
 @app.route('/document/<docid>', methods=['GET'])
 def document(docid):
-	# print docid
 	document = searchDoc(docid)
-	return str(document)
+	return render_template('document.html', paper=document)
 
 @app.errorhandler(404)
 def page_not_found(error):

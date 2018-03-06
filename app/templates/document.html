@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{%block content %}
+<div style="width: 80%;" class="justify-content-center">
+	<h2> {{paper.title}} </h2>
+
+	{% if paper.author %}
+		<p><i>Author:</i> {{paper.author}} </p>
+	{% endif %}
+
+	{% if paper.publishedAt %}
+		<p><i>Date:</i> {{paper.publishedAt}} </p>
+	{% endif %}
+
+	{% if paper.source.name %}
+		<p><i>Source:</i> {{paper.source.name}} </p>
+	{% endif %}	
+
+	<br><br>
+	<h4><i>Details..</i></h4>
+	<br>
+	<p>{{paper.description}}</p>
+	<a href="{{paper.url}}" target="_blank">More</a>
+	<br><br>
+
+	{% if paper.urlToImage %}
+		<img src="{{paper.urlToImage}}">
+	{% endif %}
+</div>
+{% endblock %}
