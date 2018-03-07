@@ -4,7 +4,7 @@
 	<div style="width: 100%;">
 		<div>
 			<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-			  <a class="navbar-brand" href="#">Welcome {{user}}!</a>
+			  <a class="navbar-brand" href="/dashboard">Welcome {{user}}!</a>
 			  <form class="form-inline ml-auto my-2 my-lg-0" action="/logout">
 			      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
 			   </form>
@@ -27,6 +27,20 @@
 		</div>
 		
 		<br />
+
+		{% if total == 0 %}
+		<div class="row justify-content-center">
+			<div class="col-10">
+				<div class="card" style="margin-left: 1px; margin-right: 1px;">
+					<div class="card-block">
+						<h4 class="card-title"> Search Results </h4>
+						<p class="card-text"> Oops.. No results for "{{query}}". Please try another query!!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
 		{% if results %}
 		<div class="row justify-content-center">
 			<div class="col-10">
@@ -84,7 +98,7 @@
 		</div>
 			
 		{% endif %}
-			
+		
 		{% endif %}
 	</div>
 {% endblock %}
