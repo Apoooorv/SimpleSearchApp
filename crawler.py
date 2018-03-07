@@ -31,7 +31,7 @@ def save(db, obj):
 def main():
 	print len(SOURCES)
 	db = connectMongo()
-	startdate = '2018-02-01'
+	startdate = '2018-02-15'
 	enddate = '2018-02-28'
 
 	startdate = datetime.datetime.strptime(startdate, '%Y-%m-%d').date()
@@ -105,7 +105,7 @@ def getMongoData():
 		print e.message
 	
 if __name__ == '__main__':
-	# main()
+	main()
 	getMongoData()
 
 # https://newsapi.org/v2/everything?sources=abc-news&from=2018-02-01&to=2018-02-28&sortBy=popularity&apiKey=32ae62cb563c4eed9a34b44c6c64219f
