@@ -17,9 +17,9 @@
 			
 				<form class="form-inline col-10" action="/search">
 					{% if query %}
-						<input class="form-control col-10" type="text" name="query" placeholder="Enter text.." value="{{query}}" required>
+						<input class="form-control col-10" type="text" name="query" placeholder="Enter text.. e.g. Obama, Soccer, Oscar" value="{{query}}" required>
 					{% else %}
-						<input class="form-control col-10" type="text" name="query" placeholder="Enter text.." required>
+						<input class="form-control col-10" type="text" name="query" placeholder="Enter text.. e.g. Obama, Soccer, Oscar" required>
 					{% endif %}
 					<!-- <input class="form-control mr-sm-2" type="text" placeholder="Search"> -->
       				<button class="btn btn-outline-success col-2 my-sm-0" type="submit">Search</button> 

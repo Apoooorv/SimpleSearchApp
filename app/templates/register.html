@@ -11,25 +11,25 @@
 		{% endif %}
 		<form method="POST">
 		<div style="display: flex;" class="justify-content-center">
-			<input type="text" name="username" placeholder="Username" style="margin-top: 2%; width: 90%;" required>
+			<input type="text" name="username" placeholder="Username: sspeilberg12" style="margin-top: 2%; width: 90%;" required>
 		</div>
 
 		<br>
 
 		<div style="display: flex;" class="justify-content-center">
-			<input type="text" name="firstname" placeholder="First Name" style="margin-top: 2%; width: 90%" required>
+			<input type="text" name="firstname" placeholder="First Name: Steven" pattern="[A-Za-z]+$" style="margin-top: 2%; width: 90%" required>
 		</div>
 			
 		<br>
 
 		<div style="display: flex;" class="justify-content-center">
-			<input type="text" name="lastname" placeholder="Last Name" style="margin-top: 2%; width:90%" required>
+			<input type="text" name="lastname" placeholder="Last Name: Speilberg" pattern="[A-Za-z]+$" style="margin-top: 2%; width:90%" required>
 		</div>
 
 		<br>
 
 		<div style="display: flex;" class="justify-content-center">
-			<input type="email" name="email" placeholder="Email" style="margin-top: 2%; width:90%" required>
+			<input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="Email: stevenspeilberg@example.com" pattern="A-Za-z0-9@a-z.a-z" style="margin-top: 2%; width:90%" required>
 		</div>
 
 		<br>
@@ -46,7 +46,9 @@
 		<br>
 	
 		<div style="display: flex; margin-bottom: 2%;" class="justify-content-center">
-			<input type="submit" name="Register" value="Register" style="margin-top: 2%">
+			<input type="submit" name="submit" value="Register" class="btn btn-primary" style="margin-right: 1%;">
+			<input type="button" name="submit" value="Cancel" class="btn btn-primary" onclick="window.location.href='/login'" style="margin-left: 1%;">
+			<!-- <input type="submit" name="Register" value="Register" style="margin-top: 2%"> -->
 		</div>
 		</form>
 		</div>

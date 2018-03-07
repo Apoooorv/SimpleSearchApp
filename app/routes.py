@@ -5,6 +5,11 @@ from app.models import User
 from sqlalchemy.exc import IntegrityError
 from elastic import searchQuery
 from mongo import searchDoc
+from flask import make_response
+from functools import wraps, update_wrapper
+from datetime import datetime
+
+from datetime import datetime
 
 @app.route("/", methods=['GET'])
 def home():
@@ -14,15 +19,20 @@ def home():
 def login():
 	if current_user.is_authenticated:
 		return redirect(url_for('dashboard'))
+
 	if request.method == 'GET':
 		return render_template('login.html')
-	# if request.form['submit'] == 'Register':
-	# 	return redirect(url_for('register'))
+	
 	else:
+		if 'remember_me' in request.form.keys():
+			remember_me = False
+		else:
+			remember_me = True
+
 		user = User.query.filter_by(username=request.form['username']).first()
 		if user is None or not user.check_password(request.form['password']):
 			return render_template('login.html', error='Invalid username or password')
-		login_user(user, remember=request.form['remember_me'])
+		login_user(user, remember=remember_me)
 		return redirect(url_for('dashboard'))
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -93,7 +103,7 @@ def search():
 		for element in response:
 			obj = {'id':element['_id'], 'title':element['_source']['title']}
 			result.append(obj)
-		
+
 		return render_template('dashboard.html', user=current_user, results=result, query=query, total=total, pagination=pagination, current_index=current_index)
 	return redirect(url_for('login'))
 

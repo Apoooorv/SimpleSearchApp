@@ -9,6 +9,16 @@
 
 </head>
 <body>
+	<script type="text/javascript">
+		function preventBack(){window.history.forward();}
+    	setTimeout("preventBack()", 0);
+		window.onunload=function(){null};
+	</script>
+	<!-- {% if checking %}
+	<script type="text/javascript">
+		window.location.href = '/logincheck'
+	</script>
+	{% endif %} -->
 	<div style="height: 100%; width:100%; display:flex; justify-content:center;">
 		{% block content %} {% endblock %}		
 	</div>	
