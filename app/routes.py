@@ -54,7 +54,10 @@ def register():
 
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
-	return render_template('dashboard.html', user=current_user)
+	if current_user.is_authenticated:
+		return render_template('dashboard.html', user=current_user)
+	return redirect(url_for('login'))
+	
 
 @app.route('/logout')
 def logout():
@@ -65,6 +68,8 @@ def logout():
 def search():
 	if current_user.is_authenticated:
 		query = request.args.get('query')
+		query = query.split('+')
+		query = ' '.join(query)
 		index = request.args.get('page')
 		if not index:
 			index = 0
@@ -88,6 +93,7 @@ def search():
 		for element in response:
 			obj = {'id':element['_id'], 'title':element['_source']['title']}
 			result.append(obj)
+		
 		return render_template('dashboard.html', user=current_user, results=result, query=query, total=total, pagination=pagination, current_index=current_index)
 	return redirect(url_for('login'))
 
