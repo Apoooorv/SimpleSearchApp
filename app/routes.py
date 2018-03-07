@@ -104,6 +104,8 @@ def search():
 			obj = {'id':element['_id'], 'title':element['_source']['title']}
 			result.append(obj)
 
+		print total
+
 		return render_template('dashboard.html', user=current_user, results=result, query=query, total=total, pagination=pagination, current_index=current_index)
 	return redirect(url_for('login'))
 
